@@ -390,10 +390,10 @@
       var zBase = 9000 + (hashString(instanceId) % 800);
       document.documentElement.style.setProperty('--cw-z-base', String(zBase));
 
-      var CLOSE_STORAGE_KEY = 'consultantWidgetClosedUntil_' + instanceId;
-      var isOpen = false;
-      var chat2deskStatus = 'idle';
-      var chat2deskInitialized = false;
+        var CLOSE_STORAGE_KEY = 'consultantWidgetClosedUntil_' + instanceId;
+        var isOpen = true;
+        var chat2deskStatus = 'idle';
+        var chat2deskInitialized = false;
 
       var observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
