@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { X, MessageCircle, Phone, Loader2, AlertCircle } from 'lucide-react';
 
 type Theme = 'dark' | 'light';
