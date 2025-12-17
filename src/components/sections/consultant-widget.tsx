@@ -140,14 +140,32 @@ export default function ConsultantWidget({ theme = 'dark' }: ConsultantWidgetPro
     // На всякий случай: держим UI скрытым
     hideChat2DeskWidget();
 
-    if (document.querySelector('script[src*="livechatv2.chat2desk.com"]')) {
-      setChat2deskStatus('ready');
+    const IE_SUPPORT_SRC = "https://livechatv2.chat2desk.com/packs/ie-11-support.js";
+    const APP_SCRIPT_ID = "chat2desk-application-js";
+
+    // Не считаем чат "готовым" по одному факту наличия скриптов домена,
+    // потому что IE-11-support.js тоже лежит на этом же домене.
+    if (document.getElementById(APP_SCRIPT_ID)) {
+      setChat2deskStatus(window.chat2desk?.open ? 'ready' : 'loading');
       return;
     }
 
     setChat2deskStatus('loading');
 
-    window.chat24_token = "904b449f7d66ed0b9657aa6892433165";
+    // По аналогии со сниппетом из документа
+    if (!document.querySelector(`script[src="${IE_SUPPORT_SRC}"]`)) {
+      const ieSupport = document.createElement("script");
+      ieSupport.src = IE_SUPPORT_SRC;
+      ieSupport.async = true;
+      document.body.appendChild(ieSupport);
+    }
+
+    // Важно: убрали хардкод токена. Если нужен — задайте через NEXT_PUBLIC_CHAT24_TOKEN
+    const token = process.env.NEXT_PUBLIC_CHAT24_TOKEN;
+    if (token) {
+      window.chat24_token = token;
+    }
+
     window.chat24_url = "https://livechatv2.chat2desk.com";
     window.chat24_socket_url = "wss://livechatv2.chat2desk.com/widget_ws_new";
     window.chat24_static_files_domain = "https://storage.chat2desk.com/";
@@ -165,6 +183,7 @@ export default function ConsultantWidget({ theme = 'dark' }: ConsultantWidgetPro
       })
       .then(data => {
         const chat24Script = document.createElement("script");
+        chat24Script.id = APP_SCRIPT_ID;
         chat24Script.type = "text/javascript";
         chat24Script.async = true;
         chat24Script.src = `${window.chat24_url}${data["application.js"]}`;
