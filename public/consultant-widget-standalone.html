@@ -550,16 +550,10 @@
           }, 300);
         }
 
-      function handleClose() {
-        isOpen = false;
-        try {
-          var closedUntil = Date.now() + (24 * 60 * 60 * 1000);
-          localStorage.setItem(CLOSE_STORAGE_KEY, closedUntil.toString());
-        } catch (e) {
-          console.warn('Не удалось сохранить в localStorage:', e);
+        function handleClose() {
+          isOpen = true;
+          updateWidget();
         }
-        updateWidget();
-      }
 
       function toggleOpen() {
         isOpen = !isOpen;
