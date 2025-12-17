@@ -4,13 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Виджет консультанта</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-      }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    :root {
+      /* Base for internal layering within the iframe */
+      --cw-z-base: 9990;
+    }
 
     @keyframes fab-bounce-in {
       0% { opacity: 0; transform: scale(0.3); }
@@ -29,47 +34,45 @@
       100% { transform: scale(1.5); opacity: 0; }
     }
 
-      @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
 
-          .startBtn,
-          .startBtn__button,
-          button.startBtn__button,
-          [class*="startBtn"] {
-            display: none !important;
-            visibility: hidden !important;
-            pointer-events: none !important;
-            opacity: 0 !important;
-            position: fixed !important;
-            left: -9999px !important;
-            top: -9999px !important;
-          }
+    .startBtn,
+    .startBtn__button,
+    button.startBtn__button,
+    [class*="startBtn"] {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      opacity: 0 !important;
+      position: fixed !important;
+      left: -9999px !important;
+      top: -9999px !important;
+    }
 
-          #chat24-iframe-container {
-            pointer-events: auto !important;
-          }
+    #chat24-iframe-container {
+      pointer-events: auto !important;
+    }
 
-        .fab-button {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        z-index: 9998;
-        width: 64px;
-        height: 64px;
-        border-radius: 50%;
-        background-color: #00A8E8;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-        animation: fab-bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-        pointer-events: auto;
-      }
+    .fab-button {
+      position: fixed;
+      z-index: calc(var(--cw-z-base) + 8);
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background-color: #00A8E8;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      animation: fab-bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+      pointer-events: auto;
+    }
 
     .fab-button:hover { transform: scale(1.1); }
 
@@ -89,30 +92,41 @@
       z-index: 10;
     }
 
-      .overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 9997;
-        background-color: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(4px);
-        pointer-events: auto;
-      }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: calc(var(--cw-z-base) + 7);
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      pointer-events: auto;
+    }
 
-      .widget-card {
-        position: fixed;
-        z-index: 9999;
-        bottom: 96px;
-        right: 24px;
-        width: calc(100% - 48px);
-        max-width: 420px;
-        background-color: #1A2332;
-        border-radius: 16px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-        overflow: hidden;
-        border: 1px solid rgba(45, 63, 82, 0.5);
-        animation: card-slide-up 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-        pointer-events: auto;
-      }
+    .widget-card {
+      position: fixed;
+      z-index: calc(var(--cw-z-base) + 9);
+      width: calc(100% - 48px);
+      max-width: 420px;
+      background-color: #1A2332;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      border: 1px solid rgba(45, 63, 82, 0.5);
+      animation: card-slide-up 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+      pointer-events: auto;
+    }
+
+    /* Position presets (relative to iframe viewport) */
+    body.cw-pos-bottom-right .fab-button { bottom: 24px; right: 24px; left: auto; top: auto; }
+    body.cw-pos-bottom-right .widget-card { bottom: 96px; right: 24px; left: auto; top: auto; }
+
+    body.cw-pos-bottom-left .fab-button { bottom: 24px; left: 24px; right: auto; top: auto; }
+    body.cw-pos-bottom-left .widget-card { bottom: 96px; left: 24px; right: auto; top: auto; }
+
+    body.cw-pos-top-right .fab-button { top: 24px; right: 24px; left: auto; bottom: auto; }
+    body.cw-pos-top-right .widget-card { top: 96px; right: 24px; left: auto; bottom: auto; }
+
+    body.cw-pos-top-left .fab-button { top: 24px; left: 24px; right: auto; bottom: auto; }
+    body.cw-pos-top-left .widget-card { top: 96px; left: 24px; right: auto; bottom: auto; }
 
     .close-button {
       position: absolute;
@@ -317,65 +331,109 @@
 
     .spinner { animation: spin 1s linear infinite; }
 
-        @media (max-width: 640px) {
-          .widget-content { padding: 16px 20px; }
-          .avatar { width: 64px; height: 64px; }
-          .widget-title { font-size: 18px; }
-          .messenger-button { padding: 12px; }
-          .messenger-icon { width: 40px; height: 40px; }
-          .messenger-text { font-size: 16px; }
-          .phone-number { font-size: 14px; }
+    @media (max-width: 640px) {
+      .widget-content { padding: 16px 20px; }
+      .avatar { width: 64px; height: 64px; }
+      .widget-title { font-size: 18px; }
+      .messenger-button { padding: 12px; }
+      .messenger-icon { width: 40px; height: 40px; }
+      .messenger-text { font-size: 16px; }
+      .phone-number { font-size: 14px; }
+    }
+
+    body {
+      min-height: 100vh;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    [data-consultant-widget-root],
+    [data-consultant-widget-root] * {
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="consultantWidget" data-consultant-widget-root></div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      var params = new URLSearchParams(window.location.search);
+
+      var rawInstanceId = params.get('instanceId') || params.get('instanceid') || 'default';
+      var instanceId = String(rawInstanceId).replace(/[^a-zA-Z0-9_-]/g, '');
+      if (!instanceId) instanceId = 'default';
+
+      var rawPosition = params.get('position') || 'bottom-right';
+      var position = String(rawPosition);
+      var allowedPositions = {
+        'bottom-right': true,
+        'bottom-left': true,
+        'top-right': true,
+        'top-left': true
+      };
+      if (!allowedPositions[position]) position = 'bottom-right';
+      document.body.classList.add('cw-pos-' + position);
+
+      function hashString(str) {
+        var hash = 0;
+        for (var i = 0; i < str.length; i++) {
+          hash = ((hash << 5) - hash) + str.charCodeAt(i);
+          hash |= 0;
         }
+        return Math.abs(hash);
+      }
 
-          body {
-            min-height: 100vh;
-            background: transparent;
-            pointer-events: none;
-          }
+      // Dynamic internal z-index so multiple instances have predictable layering
+      var zBase = 9000 + (hashString(instanceId) % 800);
+      document.documentElement.style.setProperty('--cw-z-base', String(zBase));
 
-          #consultantWidget,
-          #consultantWidget * {
-            pointer-events: auto;
-          }
-    </style>
-  </head>
-  <body>
-    <div id="consultantWidget"></div>
+      var CLOSE_STORAGE_KEY = 'consultantWidgetClosedUntil_' + instanceId;
+      var isOpen = false;
+      var chat2deskStatus = 'idle';
+      var chat2deskInitialized = false;
 
-      <script>
-        (function() {
-          'use strict';
-          var CLOSE_STORAGE_KEY = 'consultantWidgetClosedUntil';
-          var isOpen = false;
-          var chat2deskStatus = 'idle';
-          var chat2deskInitialized = false;
-
-          var observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-              if (mutation.addedNodes.length) {
-                mutation.addedNodes.forEach(function(node) {
-                  if (node.nodeType === 1) {
-                    if (node.querySelector && node.querySelector('button.startBtn__button')) {
-                      var btn = node.querySelector('button.startBtn__button');
-                      btn.style.display = 'none !important';
-                      btn.style.visibility = 'hidden !important';
-                      console.log('[Consultant Widget] Chat2Desk button hidden');
-                    }
-                    if (node.classList && node.classList.contains('startBtn__button')) {
-                      node.style.display = 'none !important';
-                      node.style.visibility = 'hidden !important';
-                      console.log('[Consultant Widget] Chat2Desk button hidden (direct)');
-                    }
-                  }
-                });
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.addedNodes.length) {
+            mutation.addedNodes.forEach(function(node) {
+              if (node.nodeType === 1) {
+                if (node.querySelector && node.querySelector('button.startBtn__button')) {
+                  var btn = node.querySelector('button.startBtn__button');
+                  btn.style.display = 'none !important';
+                  btn.style.visibility = 'hidden !important';
+                  console.log('[Consultant Widget] Chat2Desk button hidden');
+                }
+                if (node.classList && node.classList.contains('startBtn__button')) {
+                  node.style.display = 'none !important';
+                  node.style.visibility = 'hidden !important';
+                  console.log('[Consultant Widget] Chat2Desk button hidden (direct)');
+                }
               }
             });
-          });
+          }
+        });
+      });
 
-          observer.observe(document.body, {
-            childList: true,
-            subtree: true
-          });
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+
+      function getRootContainer() {
+        var container = document.querySelector('[data-consultant-widget-root]');
+        if (!container) {
+          container = document.createElement('div');
+          container.setAttribute('data-consultant-widget-root', '');
+          document.body.appendChild(container);
+        }
+
+        // Make the ID unique per instance
+        container.id = 'consultantWidget-' + instanceId;
+        return container;
+      }
 
       function checkClosedState() {
         try {
@@ -391,106 +449,106 @@
         return false;
       }
 
-          function initChat2Desk() {
-            if (chat2deskInitialized) return;
-            chat2deskInitialized = true;
-            
-            console.log('[Chat2Desk] Начало инициализации');
-            chat2deskStatus = 'loading';
+      function initChat2Desk() {
+        if (chat2deskInitialized) return;
+        chat2deskInitialized = true;
+
+        console.log('[Chat2Desk] Начало инициализации');
+        chat2deskStatus = 'loading';
+        updateWidget();
+
+        window.chat24_token = "904b449f7d66ed0b9657aa6892433165";
+        window.chat24_url = "https://livechatv2.chat2desk.com";
+        window.chat24_socket_url = "wss://livechatv2.chat2desk.com/widget_ws_new";
+        window.chat24_static_files_domain = "https://storage.chat2desk.com/";
+        window.chat24_start_hidden = true;
+        window.lang = "ru";
+
+        var timeout = setTimeout(function() {
+          if (chat2deskStatus === 'loading') {
+            console.error('[Chat2Desk] Таймаут загрузки (30 сек)');
+            chat2deskStatus = 'error';
             updateWidget();
+          }
+        }, 30000);
 
-              window.chat24_token = "904b449f7d66ed0b9657aa6892433165";
-              window.chat24_url = "https://livechatv2.chat2desk.com";
-              window.chat24_socket_url = "wss://livechatv2.chat2desk.com/widget_ws_new";
-              window.chat24_static_files_domain = "https://storage.chat2desk.com/";
-              window.chat24_start_hidden = true;
-              window.lang = "ru";
+        console.log('[Chat2Desk] Загрузка manifest.json...');
+        fetch(window.chat24_url + "/packs/manifest.json?nocache=" + new Date().getTime())
+          .then(function(res) {
+            console.log('[Chat2Desk] manifest.json загружен');
+            return res.json();
+          })
+          .then(function(data) {
+            console.log('[Chat2Desk] Загрузка application.js:', data["application.js"]);
+            var chat24Script = document.createElement("script");
+            chat24Script.type = "text/javascript";
+            chat24Script.async = true;
+            chat24Script.src = window.chat24_url + data["application.js"];
 
-            var timeout = setTimeout(function() {
-              if (chat2deskStatus === 'loading') {
-                console.error('[Chat2Desk] Таймаут загрузки (30 сек)');
-                chat2deskStatus = 'error';
-                updateWidget();
-              }
-            }, 30000);
-
-            console.log('[Chat2Desk] Загрузка manifest.json...');
-            fetch(window.chat24_url + "/packs/manifest.json?nocache=" + new Date().getTime())
-            .then(function(res) { 
-              console.log('[Chat2Desk] manifest.json загружен');
-              return res.json(); 
-            })
-            .then(function(data) {
-              console.log('[Chat2Desk] Загрузка application.js:', data["application.js"]);
-              var chat24Script = document.createElement("script");
-              chat24Script.type = "text/javascript";
-              chat24Script.async = true;
-              chat24Script.src = window.chat24_url + data["application.js"];
-              
-              chat24Script.onload = function() {
-                clearTimeout(timeout);
-                console.log('[Chat2Desk] application.js загружен');
-                
-                setTimeout(function() {
-                  chat2deskStatus = 'ready';
-                  updateWidget();
-                  console.log('[Chat2Desk] ✅ Инициализация завершена. Виджет готов.');
-                  console.log('[Chat2Desk] Проверка слушателей события "popups:open"...');
-                  
-                  var testEvent = new CustomEvent('popups:open');
-                  console.log('[Chat2Desk] Тестовое событие создано:', testEvent);
-                }, 2000);
-              };
-
-              chat24Script.onerror = function() {
-                clearTimeout(timeout);
-                console.error('[Chat2Desk] ❌ Ошибка загрузки application.js');
-                chat2deskStatus = 'error';
-                updateWidget();
-              };
-
-              document.body.appendChild(chat24Script);
-            })
-            .catch(function(err) {
+            chat24Script.onload = function() {
               clearTimeout(timeout);
-              console.error('[Chat2Desk] ❌ Ошибка загрузки manifest.json:', err);
+              console.log('[Chat2Desk] application.js загружен');
+
+              setTimeout(function() {
+                chat2deskStatus = 'ready';
+                updateWidget();
+                console.log('[Chat2Desk] ✅ Инициализация завершена. Виджет готов.');
+                console.log('[Chat2Desk] Проверка слушателей события "popups:open"...');
+
+                var testEvent = new CustomEvent('popups:open');
+                console.log('[Chat2Desk] Тестовое событие создано:', testEvent);
+              }, 2000);
+            };
+
+            chat24Script.onerror = function() {
+              clearTimeout(timeout);
+              console.error('[Chat2Desk] ❌ Ошибка загрузки application.js');
               chat2deskStatus = 'error';
               updateWidget();
-            });
+            };
+
+            document.body.appendChild(chat24Script);
+          })
+          .catch(function(err) {
+            clearTimeout(timeout);
+            console.error('[Chat2Desk] ❌ Ошибка загрузки manifest.json:', err);
+            chat2deskStatus = 'error';
+            updateWidget();
+          });
+      }
+
+      function openChat2Desk() {
+        console.log('[Chat2Desk] 🔵 Попытка открыть чат. Статус:', chat2deskStatus);
+
+        if (chat2deskStatus !== 'ready') {
+          console.warn('[Chat2Desk] ⚠️ Виджет не готов. Ожидание инициализации...');
+          return;
         }
 
-        function openChat2Desk() {
-          console.log('[Chat2Desk] 🔵 Попытка открыть чат. Статус:', chat2deskStatus);
-          
-          if (chat2deskStatus !== 'ready') {
-            console.warn('[Chat2Desk] ⚠️ Виджет не готов. Ожидание инициализации...');
-            return;
+        isOpen = false;
+        updateWidget();
+
+        console.log('[Chat2Desk] Отправка события "popups:open"');
+        document.dispatchEvent(new CustomEvent('popups:open'));
+
+        setTimeout(function() {
+          var chatContainer = document.getElementById('chat24-iframe-container');
+          if (chatContainer) {
+            chatContainer.style.display = 'block';
+            chatContainer.style.visibility = 'visible';
+            chatContainer.style.pointerEvents = 'auto';
+            console.log('[Chat2Desk] ✅ Контейнер чата показан');
           }
-          
-          isOpen = false;
-          updateWidget();
-          
-          console.log('[Chat2Desk] Отправка события "popups:open"');
-          document.dispatchEvent(new CustomEvent('popups:open'));
-          
-          setTimeout(function() {
-            var chatContainer = document.getElementById('chat24-iframe-container');
-            if (chatContainer) {
-              chatContainer.style.display = 'block';
-              chatContainer.style.visibility = 'visible';
-              chatContainer.style.pointerEvents = 'auto';
-              console.log('[Chat2Desk] ✅ Контейнер чата показан');
-            }
-            
-            var chatButtons = document.querySelectorAll('.startBtn, .startBtn__button, button.startBtn__button, [class*="startBtn__button"]');
-            chatButtons.forEach(function(btn) {
-              btn.style.display = 'none';
-              btn.style.visibility = 'hidden';
-              btn.style.pointerEvents = 'none';
-            });
-            console.log('[Chat2Desk] ✅ Кнопки Chat2Desk скрыты:', chatButtons.length);
-          }, 300);
-        }
+
+          var chatButtons = document.querySelectorAll('.startBtn, .startBtn__button, button.startBtn__button, [class*="startBtn__button"]');
+          chatButtons.forEach(function(btn) {
+            btn.style.display = 'none';
+            btn.style.visibility = 'hidden';
+            btn.style.pointerEvents = 'none';
+          });
+          console.log('[Chat2Desk] ✅ Кнопки Chat2Desk скрыты:', chatButtons.length);
+        }, 300);
+      }
 
       function handleClose() {
         isOpen = false;
@@ -509,23 +567,23 @@
       }
 
       function updateWidget() {
-        var container = document.getElementById('consultantWidget');
+        var container = getRootContainer();
         if (!container) return;
-        
+
         if (!isOpen) {
           container.innerHTML = '<button class="fab-button" onclick="window.consultantWidgetToggle()" aria-label="Открыть виджет консультанта"><div class="pulse-ring"></div><svg class="fab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></button>';
         } else {
-          var chatIconContent = chat2deskStatus === 'loading' 
+          var chatIconContent = chat2deskStatus === 'loading'
             ? '<svg class="spinner" style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/></svg>'
             : chat2deskStatus === 'error'
-            ? '<svg style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
-            : '<svg style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>';
+              ? '<svg style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+              : '<svg style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>';
 
           var chatStatus = chat2deskStatus === 'loading'
             ? '<div class="chat-status">Загрузка...</div>'
             : chat2deskStatus === 'error'
-            ? '<div class="chat-status error">Ошибка подключения</div>'
-            : '';
+              ? '<div class="chat-status error">Ошибка подключения</div>'
+              : '';
 
           container.innerHTML = '\
             <div class="overlay" onclick="window.consultantWidgetClose()"></div>\
@@ -593,87 +651,91 @@
                     <div class="phone-label">Служба поддержки</div>\
                   </a>\
                 </div>\
-              </div>\
-            </div>';
+              </div>';
         }
       }
 
-            window.consultantWidgetToggle = toggleOpen;
-            window.consultantWidgetClose = handleClose;
-            window.consultantWidgetOpenChat = openChat2Desk;
-            
-            document.addEventListener('initialize_widget', function() {
-              console.log('[Chat2Desk] 📦 initialize_widget: виджет загружен');
-              setTimeout(function() {
-                var chatButtons = document.querySelectorAll('.startBtn, .startBtn__button, button.startBtn__button, [class*="startBtn"]');
-                chatButtons.forEach(function(btn) {
-                  btn.style.cssText = 'display: none !important; visibility: hidden !important; pointer-events: none !important;';
-                });
-                console.log('[Chat2Desk] ✅ Кнопки скрыты после загрузки:', chatButtons.length);
-              }, 500);
-            });
-            
-            document.addEventListener('initialize_client', function() {
-              console.log('[Chat2Desk] 🟢 initialize_client: окно чата открыто');
-              var fab = document.querySelector('.fab-button');
-              var overlay = document.querySelector('.overlay');
-              var card = document.querySelector('.widget-card');
-              if (fab) fab.style.display = 'none';
-              if (overlay) overlay.style.display = 'none';
-              if (card) card.style.display = 'none';
-              isOpen = false;
-            });
-            
-            var chatCloseObserver = new MutationObserver(function(mutations) {
-              var chatContainer = document.getElementById('chat24-iframe-container');
-              if (chatContainer) {
-                var display = window.getComputedStyle(chatContainer).display;
-                if (display === 'none') {
-                  console.log('[Chat2Desk] 🔴 Чат закрыт');
-                  var fab = document.querySelector('.fab-button');
-                  if (!fab) {
-                    isOpen = false;
-                    updateWidget();
-                  }
-                }
-              }
-            });
-            
-            setTimeout(function() {
-              var chatContainer = document.getElementById('chat24-iframe-container');
-              if (chatContainer) {
-                chatCloseObserver.observe(chatContainer, { attributes: true, attributeFilter: ['style'] });
-              }
-            }, 3000);
-          
-          window.chat2deskDebug = function() {
-            console.log('=== ДИАГНОСТИКА CHAT2DESK ===');
-            console.log('Статус:', chat2deskStatus);
-            console.log('Инициализирован:', chat2deskInitialized);
-            console.log('window.chat2desk:', window.chat2desk);
-            console.log('Элементы DOM:');
-            console.log('  - #chat24-button:', document.getElementById('chat24-button'));
-            console.log('  - #chat24-iframe-container:', document.getElementById('chat24-iframe-container'));
-            console.log('  - [id^="chat24"]:', document.querySelectorAll('[id^="chat24"]'));
-            console.log('Попытка открыть чат вручную...');
-            document.dispatchEvent(new CustomEvent('popups:open'));
-          };
+      window.consultantWidgetToggle = toggleOpen;
+      window.consultantWidgetClose = handleClose;
+      window.consultantWidgetOpenChat = openChat2Desk;
 
-          localStorage.removeItem(CLOSE_STORAGE_KEY);
-          
-          if (!checkClosedState()) {
-            updateWidget();
-            initChat2Desk();
+      document.addEventListener('initialize_widget', function() {
+        console.log('[Chat2Desk] 📦 initialize_widget: виджет загружен');
+        setTimeout(function() {
+          var chatButtons = document.querySelectorAll('.startBtn, .startBtn__button, button.startBtn__button, [class*="startBtn"]');
+          chatButtons.forEach(function(btn) {
+            btn.style.cssText = 'display: none !important; visibility: hidden !important; pointer-events: none !important;';
+          });
+          console.log('[Chat2Desk] ✅ Кнопки скрыты после загрузки:', chatButtons.length);
+        }, 500);
+      });
+
+      document.addEventListener('initialize_client', function() {
+        console.log('[Chat2Desk] 🟢 initialize_client: окно чата открыто');
+        var fab = document.querySelector('.fab-button');
+        var overlay = document.querySelector('.overlay');
+        var card = document.querySelector('.widget-card');
+        if (fab) fab.style.display = 'none';
+        if (overlay) overlay.style.display = 'none';
+        if (card) card.style.display = 'none';
+        isOpen = false;
+      });
+
+      var chatCloseObserver = new MutationObserver(function() {
+        var chatContainer = document.getElementById('chat24-iframe-container');
+        if (chatContainer) {
+          var display = window.getComputedStyle(chatContainer).display;
+          if (display === 'none') {
+            console.log('[Chat2Desk] 🔴 Чат закрыт');
+            var fab = document.querySelector('.fab-button');
+            if (!fab) {
+              isOpen = false;
+              updateWidget();
+            }
           }
-          
-          window.consultantWidgetReset = function() {
-            localStorage.removeItem(CLOSE_STORAGE_KEY);
-            location.reload();
-          };
-          
-          console.log('💡 Диагностика: chat2deskDebug()');
-          console.log('💡 Сброс виджета: consultantWidgetReset()');
-      })();
-    </script>
+        }
+      });
+
+      setTimeout(function() {
+        var chatContainer = document.getElementById('chat24-iframe-container');
+        if (chatContainer) {
+          chatCloseObserver.observe(chatContainer, { attributes: true, attributeFilter: ['style'] });
+        }
+      }, 3000);
+
+      window.chat2deskDebug = function() {
+        console.log('=== ДИАГНОСТИКА CHAT2DESK ===');
+        console.log('instanceId:', instanceId);
+        console.log('position:', position);
+        console.log('storageKey:', CLOSE_STORAGE_KEY);
+        console.log('Статус:', chat2deskStatus);
+        console.log('Инициализирован:', chat2deskInitialized);
+        console.log('window.chat2desk:', window.chat2desk);
+        console.log('Элементы DOM:');
+        console.log('  - #chat24-button:', document.getElementById('chat24-button'));
+        console.log('  - #chat24-iframe-container:', document.getElementById('chat24-iframe-container'));
+        console.log('  - [id^="chat24"]:', document.querySelectorAll('[id^="chat24"]'));
+        console.log('Попытка открыть чат вручную...');
+        document.dispatchEvent(new CustomEvent('popups:open'));
+      };
+
+      if (!checkClosedState()) {
+        updateWidget();
+        initChat2Desk();
+      }
+
+      window.consultantWidgetReset = function() {
+        try {
+          localStorage.removeItem(CLOSE_STORAGE_KEY);
+        } catch (e) {
+          // ignore
+        }
+        location.reload();
+      };
+
+      console.log('💡 Диагностика: chat2deskDebug()');
+      console.log('💡 Сброс виджета: consultantWidgetReset()');
+    })();
+  </script>
 </body>
 </html>
