@@ -231,8 +231,35 @@
       }
     }
 
-      #chat24-button {
-        display: none !important;
-        visibility: hidden !important;
-      }
-}
+        /* Chat2Desk: скрываем лончер всегда */
+        .startBtn,
+        .startBtn__button,
+        button.startBtn__button,
+        [class*="startBtn"],
+        #chat24-button {
+          display: none !important;
+          visibility: hidden !important;
+          pointer-events: none !important;
+          opacity: 0 !important;
+          position: fixed !important;
+          left: -9999px !important;
+          top: -9999px !important;
+        }
+
+        /* Chat2Desk: прячем окно чата до явного открытия */
+        body:not(.chat2desk-open) #chat24-iframe-container,
+        body:not(.chat2desk-open) iframe[id*="chat24"],
+        body:not(.chat2desk-open) iframe[src*="chat2desk"],
+        body:not(.chat2desk-open) [id*="chat24"],
+        body:not(.chat2desk-open) [class*="chat24"],
+        body:not(.chat2desk-open) [id*="chat2desk"],
+        body:not(.chat2desk-open) [class*="chat2desk"] {
+          display: none !important;
+          visibility: hidden !important;
+          pointer-events: none !important;
+          opacity: 0 !important;
+          position: fixed !important;
+          left: -9999px !important;
+          top: -9999px !important;
+        }
+  }
