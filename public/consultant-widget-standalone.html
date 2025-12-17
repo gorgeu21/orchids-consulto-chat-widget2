@@ -708,10 +708,8 @@
         document.dispatchEvent(new CustomEvent('popups:open'));
       };
 
-      if (!checkClosedState()) {
         updateWidget();
         initChat2Desk();
-      }
 
       window.consultantWidgetReset = function() {
         try {
