@@ -185,31 +185,41 @@ export default function ConsultantWidget({ theme = 'dark' }: ConsultantWidgetPro
       });
   };
 
-    const openChat2Desk = () => {
-      if (typeof window === 'undefined') return;
-      if (chat2deskStatus !== 'ready') return;
-      
-      setIsOpen(false);
-      
-      const styleSheet = document.getElementById('hide-chat2desk-widget');
-      if (styleSheet) {
-        styleSheet.remove();
-      }
-      
-      document.dispatchEvent(new CustomEvent('popups:open'));
-      
-      setTimeout(() => {
-        const chatContainer = document.getElementById('chat24-iframe-container');
-        if (chatContainer) {
-          chatContainer.style.cssText = 'display: block !important; visibility: visible !important; pointer-events: auto !important; position: fixed !important; left: auto !important; top: auto !important; opacity: 1 !important;';
-        }
-        
-        const chatButtons = document.querySelectorAll('.startBtn, .startBtn__button, button.startBtn__button, [class*="startBtn__button"]');
-        chatButtons.forEach((btn) => {
-          (btn as HTMLElement).style.cssText = 'display: none !important; visibility: hidden !important; pointer-events: none !important;';
-        });
-      }, 300);
-    };
+      const openChat2Desk = () => {
+        if (typeof window === 'undefined') return;
+        if (chat2deskStatus !== 'ready') return;
+
+        setIsOpen(false);
+
+        // Разрешаем показ чата (лончер при этом остается скрыт стилями)
+        document.body.classList.add('chat2desk-open');
+        document.dispatchEvent(new CustomEvent('popups:open'));
+
+        setTimeout(() => {
+          // Если у Chat2Desk есть публичный API — используем его
+          window.chat2desk?.open?.();
+
+          // Фолбэк: программно кликаем по кнопке запуска (она скрыта CSS)
+          const startButton = document.querySelector<HTMLButtonElement>(
+            '.startBtn__button, button.startBtn__button, .startBtn button, .startBtn'
+          );
+          startButton?.click();
+
+          const chatContainer = document.getElementById('chat24-iframe-container');
+          if (chatContainer) {
+            chatContainer.style.cssText =
+              'display: block !important; visibility: visible !important; pointer-events: auto !important; position: fixed !important; left: auto !important; top: auto !important; opacity: 1 !important;';
+          }
+
+          // Лончер прячем всегда
+          const chatButtons = document.querySelectorAll(
+            '.startBtn, .startBtn__button, button.startBtn__button, [class*="startBtn__button"], #chat24-button'
+          );
+          chatButtons.forEach((btn) => {
+            (btn as HTMLElement).style.cssText = 'display: none !important; visibility: hidden !important; pointer-events: none !important;';
+          });
+        }, 150);
+      };
 
   const handleClose = () => {
     setIsOpen(false);
@@ -378,11 +388,11 @@ export default function ConsultantWidget({ theme = 'dark' }: ConsultantWidgetPro
                     </span>
                   </a>
 
-                  <button 
-                    onClick={openChat2Desk}
-                    disabled={chat2deskStatus !== 'ready'}
-                    className={`group w-full flex items-center gap-4 p-3 sm:p-4 rounded-xl ${cardBg} ${cardHover} border ${borderColor} transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed`}
-                  >
+                    <button 
+                      onClick={handleOnlineChatClick}
+                      disabled={chat2deskStatus === 'loading'}
+                      className={`group w-full flex items-center gap-4 p-3 sm:p-4 rounded-xl ${cardBg} ${cardHover} border ${borderColor} transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed`}
+                    >
                     <div className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white shadow-lg`} style={{ backgroundColor: accentColor }}>
                       {chat2deskStatus === 'loading' && <Loader2 className="w-6 h-6 animate-spin" />}
                       {chat2deskStatus === 'error' && <AlertCircle className="w-6 h-6" />}
