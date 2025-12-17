@@ -303,6 +303,8 @@ export default function ConsultantWidget({ theme = 'dark' }: ConsultantWidgetPro
     setIsOpen(!isOpen);
   };
 
+  if (!isVisible) return null;
+
   const isDark = currentTheme === 'dark';
   const bgColor = isDark ? 'bg-[#1A2332]' : 'bg-white';
   const textPrimary = isDark ? 'text-white' : 'text-[#1A2332]';
@@ -397,15 +399,16 @@ export default function ConsultantWidget({ theme = 'dark' }: ConsultantWidgetPro
             <div className="p-5 sm:p-6">
               <div className="flex items-start gap-4 mb-6">
                 <div className="relative flex-shrink-0">
-                  <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden ring-2 ${isDark ? 'ring-[#2D3F52]' : 'ring-gray-300'} ${isDark ? 'bg-[#2D3F52]' : 'bg-gray-200'}`}>
-                    <Image
-                      src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/cf1c9248-ff3e-4acd-9da1-612b3ed743d8-consulto-promo-bubble-lovable-app/assets/images/consultant-avatar-b1necHKX-1.jpg"
-                      alt="Персональный консультант"
-                      width={80}
-                      height={80}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                    <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden ring-2 ${isDark ? 'ring-[#2D3F52]' : 'ring-gray-300'} ${isDark ? 'bg-[#2D3F52]' : 'bg-gray-200'}`}>
+                      <img
+                        src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/cf1c9248-ff3e-4acd-9da1-612b3ed743d8-consulto-promo-bubble-lovable-app/assets/images/consultant-avatar-b1necHKX-1.jpg"
+                        alt="Персональный консультант"
+                        width={80}
+                        height={80}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
                   <div className={`absolute bottom-1 right-1 w-4 h-4 rounded-full ${isDark ? 'bg-[#25D366]' : 'bg-[#10B981]'} border-2 ${isDark ? 'border-[#1A2332]' : 'border-white'}`}></div>
                 </div>
 
