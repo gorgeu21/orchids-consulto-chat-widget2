@@ -29,7 +29,7 @@ export default function ConsultantWidget({ theme = 'dark' }: ConsultantWidgetPro
   const [isOpen, setIsOpen] = useState(false);
   const [chat2deskStatus, setChat2deskStatus] = useState<Chat2DeskStatus>('idle');
   const [openChatOnReady, setOpenChatOnReady] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<Theme>(theme);
+  const [currentTheme] = useState<Theme>(theme);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
