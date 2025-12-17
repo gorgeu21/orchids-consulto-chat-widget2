@@ -664,16 +664,14 @@
         }, 500);
       });
 
-      document.addEventListener('initialize_client', function() {
-        console.log('[Chat2Desk] 🟢 initialize_client: окно чата открыто');
-        var fab = document.querySelector('.fab-button');
-        var overlay = document.querySelector('.overlay');
-        var card = document.querySelector('.widget-card');
-        if (fab) fab.style.display = 'none';
-        if (overlay) overlay.style.display = 'none';
-        if (card) card.style.display = 'none';
-        isOpen = false;
-      });
+        document.addEventListener('initialize_client', function() {
+          console.log('[Chat2Desk] 🟢 initialize_client: окно чата открыто');
+          var overlay = document.querySelector('.overlay');
+          var card = document.querySelector('.widget-card');
+          if (overlay) overlay.style.display = 'none';
+          if (card) card.style.display = 'none';
+          isOpen = false;
+        });
 
       var chatCloseObserver = new MutationObserver(function() {
         var chatContainer = document.getElementById('chat24-iframe-container');
