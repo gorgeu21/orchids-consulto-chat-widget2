@@ -1,0 +1,235 @@
+/* Updated: 2025-12-17T10:16:55.164Z */
+/* Updated: 2025-12-17T09:44:40.654Z */
+/* Updated: 2025-12-17T09:44:36.791Z */
+/* Updated: 2025-12-16T14:34:30.127Z */
+/* Updated: 2025-12-16T08:42:43.005Z */
+/* Updated: 2025-12-16T08:24:42.979Z */
+/* Updated: 2025-12-16T08:24:24.621Z */
+/* Updated: 2025-12-15T13:41:55.756Z */
+/* Updated: 2025-12-15T12:57:54.035Z */
+/* Updated: 2025-12-15T12:48:02.633Z */
+/* Updated: 2025-12-15T12:25:47.822Z */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-background: #1A2332;
+  --color-foreground: #FFFFFF;
+
+  --color-card: #1A2332;
+  --color-card-foreground: #FFFFFF;
+
+  --color-popover: #1A2332;
+  --color-popover-foreground: #FFFFFF;
+
+  --color-primary: #FFFFFF;
+  --color-primary-foreground: #1A2332;
+
+  --color-secondary: #2D3F52;
+  --color-secondary-foreground: #FFFFFF;
+
+  --color-muted: #2D3F52;
+  --color-muted-foreground: #A8B5C8;
+
+  --color-accent: #2D3F52;
+  --color-accent-foreground: #FFFFFF;
+
+  --color-destructive: #EF4444;
+  --color-destructive-foreground: #FFFFFF;
+
+  --color-border: #2D3F52;
+  --color-input: #2D3F52;
+  --color-ring: #A8B5C8;
+
+  --color-chart-1: #e67e22;
+  --color-chart-2: #2d8659;
+  --color-chart-3: #1e3a5f;
+  --color-chart-4: #f1c40f;
+  --color-chart-5: #e74c3c;
+
+  --color-sidebar: #1A2332;
+  --color-sidebar-foreground: #FFFFFF;
+  --color-sidebar-primary: #FFFFFF;
+  --color-sidebar-primary-foreground: #1A2332;
+  --color-sidebar-accent: #2D3F52;
+  --color-sidebar-accent-foreground: #FFFFFF;
+  --color-sidebar-border: #2D3F52;
+  --color-sidebar-ring: #A8B5C8;
+
+  --radius-lg: 0.5rem;
+  --radius-md: calc(0.5rem - 2px);
+  --radius-sm: calc(0.5rem - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
+  --color-widget-bg-primary: #1A2332;
+  --color-widget-overlay-bg: #000000;
+  --color-widget-text-primary: #FFFFFF;
+  --color-widget-text-secondary: #A8B5C8;
+  --color-widget-border: #2D3F52;
+  --color-telegram-brand: #0088CC;
+  --color-whatsapp-brand: #25D366;
+  --color-chat-blue: #00A8E8;
+  --color-phone-button-bg: #1F2E3F;
+  --color-phone-button-hover: #2A3B50;
+  --color-avatar-ring: #2D3F52;
+  --color-status-indicator: #25D366;
+
+  --font-display: "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  --shadow-widget: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  --shadow-messenger-icon: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  @keyframes pulse-soft {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+  --animate-pulse-soft: pulse-soft 2000ms ease-in-out infinite;
+}
+
+/*
+  The default border color has changed to currentColor in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-border);
+  }
+}
+
+@layer base {
+  :root {
+    --background: var(--color-widget-bg-primary);
+    --foreground: var(--color-widget-text-primary);
+    --card: var(--color-widget-bg-primary);
+    --card-foreground: var(--color-widget-text-primary);
+    --popover: var(--color-widget-bg-primary);
+    --popover-foreground: var(--color-widget-text-primary);
+    --primary: var(--color-widget-text-primary);
+    --primary-foreground: var(--color-widget-bg-primary);
+    --secondary: var(--color-widget-border);
+    --secondary-foreground: var(--color-widget-text-primary);
+    --muted: var(--color-widget-border);
+    --muted-foreground: var(--color-widget-text-secondary);
+    --accent: var(--color-widget-border);
+    --accent-foreground: var(--color-widget-text-primary);
+    --destructive: var(--color-destructive);
+    --destructive-foreground: var(--color-destructive-foreground);
+    --border: var(--color-widget-border);
+    --input: var(--color-widget-border);
+    --ring: var(--color-widget-text-secondary);
+    --chart-1: var(--color-chart-1);
+    --chart-2: var(--color-chart-2);
+    --chart-3: var(--color-chart-3);
+    --chart-4: var(--color-chart-4);
+    --chart-5: var(--color-chart-5);
+    --radius: 0.625rem;
+    --sidebar-background: var(--color-widget-bg-primary);
+    --sidebar-foreground: var(--color-widget-text-primary);
+    --sidebar-primary: var(--color-widget-text-primary);
+    --sidebar-primary-foreground: var(--color-widget-bg-primary);
+    --sidebar-accent: var(--color-widget-border);
+    --sidebar-accent-foreground: var(--color-widget-text-primary);
+    --sidebar-border: var(--color-widget-border);
+    --sidebar-ring: var(--color-widget-text-secondary);
+  }
+
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--color-widget-text-primary);
+  }
+
+  h3 {
+    font-size: 0.875rem; /* 14px */
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--color-widget-text-secondary);
+  }
+
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      max-width: 640px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      max-width: 768px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 1024px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .container {
+      max-width: 1280px;
+    }
+  }
+
+    @media (min-width: 1536px) {
+      .container {
+        max-width: 1536px;
+      }
+    }
+
+      #chat24-button {
+        display: none !important;
+        visibility: hidden !important;
+      }
+}

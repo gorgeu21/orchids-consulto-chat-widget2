@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Установка виджета консультанта</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #1A2332 0%, #2D3F52 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #00A8E8 0%, #0088CC 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      box-shadow: 0 10px 30px rgba(0, 168, 232, 0.3);
+    }
+
+    .logo svg {
+      width: 40px;
+      height: 40px;
+      color: white;
+    }
+
+    h1 {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #00A8E8 0%, #25D366 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 20px;
+      color: #A8B5C8;
+      line-height: 1.6;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .card h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #00A8E8;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #00A8E8 0%, #0088CC 100%);
+      border-radius: 50%;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .card p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #C9D1DB;
+      margin-bottom: 20px;
+    }
+
+    .code-block {
+      position: relative;
+      background: #0D1117;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      margin: 0;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #E6EDF3;
+    }
+
+    .copy-button {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(0, 168, 232, 0.2);
+      border: 1px solid #00A8E8;
+      color: #00A8E8;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-button:hover {
+      background: rgba(0, 168, 232, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .copy-button.copied {
+      background: rgba(37, 211, 102, 0.2);
+      border-color: #25D366;
+      color: #25D366;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin: 20px 0;
+    }
+
+    .feature-list li {
+      padding: 12px 0;
+      padding-left: 32px;
+      position: relative;
+      color: #C9D1DB;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .feature-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #25D366;
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .warning {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 20px 0;
+      color: #FCA5A5;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .info {
+      background: rgba(0, 168, 232, 0.1);
+      border: 1px solid rgba(0, 168, 232, 0.3);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 20px 0;
+      color: #7DD3FC;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .demo-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #00A8E8 0%, #0088CC 100%);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 10px 30px rgba(0, 168, 232, 0.3);
+      margin-top: 20px;
+    }
+
+    .demo-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(0, 168, 232, 0.4);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #6B7280;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 32px;
+      }
+
+      .subtitle {
+        font-size: 18px;
+      }
+
+      .card {
+        padding: 24px;
+      }
+
+      .card h2 {
+        font-size: 24px;
+      }
+
+      .code-block {
+        padding: 16px;
+      }
+
+      .code-block pre {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </div>
+      <h1>Виджет консультанта</h1>
+      <p class="subtitle">Добавьте профессиональный виджет связи на ваш сайт всего за 30 секунд</p>
+    </div>
+
+    <div class="card">
+      <h2>
+        <span class="step-number">1</span>
+        Скопируйте код
+      </h2>
+      <p>Вставьте этот код перед закрывающим тегом <code>&lt;/body&gt;</code> на всех страницах вашего сайта:</p>
+      
+      <div class="code-block">
+        <button class="copy-button" onclick="copyCode('code1', this)">Копировать</button>
+        <pre id="code1"><code>&lt;script src="https://ваш-домен.vercel.app/widget.js" defer&gt;&lt;/script&gt;</code></pre>
+      </div>
+
+      <div class="info">
+        <strong>💡 Совет:</strong> Замените <code>ваш-домен.vercel.app</code> на реальный адрес вашего проекта на Vercel.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>
+        <span class="step-number">2</span>
+        Для Tilda, WordPress и других CMS
+      </h2>
+      <p>Вставьте код в раздел с пользовательским HTML или JavaScript:</p>
+
+      <ul class="feature-list">
+        <li><strong>Tilda:</strong> Используйте блок "HTML-код" (T123)</li>
+        <li><strong>WordPress:</strong> Используйте плагин "Insert Headers and Footers" или раздел "Внешний вид → Редактор тем"</li>
+        <li><strong>Wix:</strong> Настройки → Пользовательский код → Вставить в Body (конец)</li>
+        <li><strong>Squarespace:</strong> Настройки → Дополнительно → Code Injection → Footer</li>
+      </ul>
+
+      <div class="warning">
+        <strong>⚠️ Важно:</strong> Убедитесь, что скрипт загружается на всех страницах сайта. Проверьте консоль браузера (F12) на наличие ошибок.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>
+        <span class="step-number">3</span>
+        Настройка контактов
+      </h2>
+      <p>Для изменения номеров телефонов, ссылок на мессенджеры и других настроек:</p>
+
+      <ul class="feature-list">
+        <li>Отредактируйте файл <code>public/widget.js</code> в вашем проекте</li>
+        <li>Найдите строки с номерами телефонов и ссылками на Telegram/WhatsApp</li>
+        <li>Измените их на свои контакты</li>
+        <li>Сохраните и загрузите изменения на Vercel</li>
+      </ul>
+
+      <div class="info">
+        <strong>💡 Совет:</strong> Для Chat2Desk замените токен в строке <code>window.chat24_token</code> на ваш собственный.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>✨ Что входит в виджет</h2>
+      <ul class="feature-list">
+        <li>Telegram — мгновенная связь через Telegram</li>
+        <li>WhatsApp — общение через WhatsApp</li>
+        <li>Онлайн чат — интеграция с Chat2Desk</li>
+        <li>Телефонные номера — прямые звонки</li>
+        <li>Адаптивный дизайн — работает на всех устройствах</li>
+        <li>Нет конфликтов — изолированные CSS-классы</li>
+        <li>Легковесный — быстрая загрузка</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>🚀 Проверка установки</h2>
+      <p>После установки скрипта:</p>
+      <ul class="feature-list">
+        <li>Откройте ваш сайт в браузере</li>
+        <li>В правом нижнем углу должна появиться синяя кнопка чата</li>
+        <li>Нажмите на кнопку — откроется карточка с вариантами связи</li>
+        <li>Проверьте работу всех кнопок и ссылок</li>
+      </ul>
+
+      <div class="info">
+        <strong>💡 Отладка:</strong> Откройте консоль браузера (F12) и проверьте, загружается ли файл <code>widget.js</code> без ошибок.
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Разработано для удобной интеграции на любые сайты | 2024</p>
+    </div>
+  </div>
+
+  <script>
+    function copyCode(elementId, button) {
+      var code = document.getElementById(elementId).textContent;
+      navigator.clipboard.writeText(code).then(function() {
+        button.textContent = '✓ Скопировано!';
+        button.classList.add('copied');
+        setTimeout(function() {
+          button.textContent = 'Копировать';
+          button.classList.remove('copied');
+        }, 2000);
+      }).catch(function(err) {
+        console.error('Ошибка копирования:', err);
+        alert('Не удалось скопировать. Скопируйте код вручную.');
+      });
+    }
+  </script>
+</body>
+</html>
