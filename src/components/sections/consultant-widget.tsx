@@ -25,6 +25,7 @@ interface ConsultantWidgetProps {
 }
 
 export default function ConsultantWidget({ theme = 'dark' }: ConsultantWidgetProps) {
+  const [isVisible, setIsVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [chat2deskStatus, setChat2deskStatus] = useState<Chat2DeskStatus>('idle');
   const [openChatOnReady, setOpenChatOnReady] = useState(false);
@@ -36,6 +37,9 @@ export default function ConsultantWidget({ theme = 'dark' }: ConsultantWidgetPro
     // Важно: UI Chat2Desk скрываем всегда, показываем только по клику на кнопку "Онлайн-чат".
     hideChat2DeskWidget();
 
+    // Показываем виджет с задержкой 3 секунды
+    let showTimeout: number | undefined;
+
     try {
       const closedUntil = localStorage.getItem('consultantWidgetClosedUntil');
       if (closedUntil) {
@@ -46,9 +50,21 @@ export default function ConsultantWidget({ theme = 'dark' }: ConsultantWidgetPro
           localStorage.removeItem('consultantWidgetClosedUntil');
         }
       }
+
+      showTimeout = window.setTimeout(() => {
+        setIsVisible(true);
+      }, 3000);
     } catch (e) {
       console.warn('localStorage недоступен:', e);
+
+      showTimeout = window.setTimeout(() => {
+        setIsVisible(true);
+      }, 3000);
     }
+
+    return () => {
+      if (showTimeout) window.clearTimeout(showTimeout);
+    };
   }, []);
 
   const hideChat2DeskWidget = () => {
