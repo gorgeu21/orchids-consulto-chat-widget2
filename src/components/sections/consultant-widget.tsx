@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AlertCircle, Loader2, MessageCircle, Phone, X } from "lucide-react";
+import { AlertCircle, Loader2, MessageSquareText, Phone, X } from "lucide-react";
 
 type ConsultantWidgetTheme = "dark" | "light";
 type Chat2DeskStatus = "idle" | "loading" | "ready" | "error";
@@ -54,7 +54,6 @@ export default function ConsultantWidget({ theme = "dark" }: ConsultantWidgetPro
       }, 3000);
     } catch (e) {
       console.warn("localStorage недоступен:", e);
-
       showTimeout = window.setTimeout(() => {
         setIsVisible(true);
       }, 3000);
@@ -77,7 +76,9 @@ export default function ConsultantWidget({ theme = "dark" }: ConsultantWidgetPro
       .startBtn__button,
       button.startBtn__button,
       [class*="startBtn"],
-      #chat24-button {
+      #chat24-button,
+      .chat24-widget-button,
+      #chat24-widget-container .startBtn {
         display: none !important;
         visibility: hidden !important;
         pointer-events: none !important;
@@ -85,6 +86,9 @@ export default function ConsultantWidget({ theme = "dark" }: ConsultantWidgetPro
         position: fixed !important;
         left: -9999px !important;
         top: -9999px !important;
+        width: 0 !important;
+        height: 0 !important;
+        z-index: -1 !important;
       }
 
       body:not(.chat2desk-open) #chat24-iframe-container,
@@ -109,22 +113,20 @@ export default function ConsultantWidget({ theme = "dark" }: ConsultantWidgetPro
           if (!(node instanceof HTMLElement)) return;
 
           const nodeClass = node.className?.toString() ?? "";
-          const isStartBtn = node.id === "chat24-button" || nodeClass.includes("startBtn");
+          const isStartBtn = node.id === "chat24-button" || nodeClass.includes("startBtn") || nodeClass.includes("chat24-widget-button");
           const isChat24 = node.id?.includes("chat24") || nodeClass.includes("chat24");
 
           if (isStartBtn || (!isChatOpen && isChat24)) {
-            node.style.cssText =
-              "display: none !important; visibility: hidden !important; pointer-events: none !important;";
+            node.style.cssText = "display: none !important; visibility: hidden !important; pointer-events: none !important; opacity: 0 !important; width: 0 !important; height: 0 !important;";
           }
 
           if (!node.querySelector) return;
 
           const startButtons = node.querySelectorAll(
-            ".startBtn, .startBtn__button, button.startBtn__button, [class*=\"startBtn\"], #chat24-button"
+            ".startBtn, .startBtn__button, button.startBtn__button, [class*=\"startBtn\"], #chat24-button, .chat24-widget-button"
           );
           startButtons.forEach((el) => {
-            (el as HTMLElement).style.cssText =
-              "display: none !important; visibility: hidden !important; pointer-events: none !important;";
+            (el as HTMLElement).style.cssText = "display: none !important; visibility: hidden !important; pointer-events: none !important; opacity: 0 !important; width: 0 !important; height: 0 !important;";
           });
 
           if (!isChatOpen) {
@@ -132,8 +134,7 @@ export default function ConsultantWidget({ theme = "dark" }: ConsultantWidgetPro
               "#chat24-iframe-container, [id*=\"chat24\"], [class*=\"chat24\"]"
             );
             chat24Elements.forEach((el) => {
-              (el as HTMLElement).style.cssText =
-                "display: none !important; visibility: hidden !important; pointer-events: none !important;";
+              (el as HTMLElement).style.cssText = "display: none !important; visibility: hidden !important; pointer-events: none !important; opacity: 0 !important;";
             });
           }
         });
@@ -170,7 +171,6 @@ export default function ConsultantWidget({ theme = "dark" }: ConsultantWidgetPro
 
     const token = "904b449f7d66ed0b9657aa6892433165";
     window.chat24_token = token;
-
     window.chat24_url = "https://livechatv2.chat2desk.com";
     window.chat24_socket_url = "wss://livechatv2.chat2desk.com/widget_ws_new";
     window.chat24_static_files_domain = "https://storage.chat2desk.com/";
@@ -219,7 +219,6 @@ export default function ConsultantWidget({ theme = "dark" }: ConsultantWidgetPro
     if (chat2deskStatus !== "ready") return;
 
     setIsOpen(false);
-
     document.body.classList.add("chat2desk-open");
     document.dispatchEvent(new CustomEvent("popups:open"));
 
@@ -227,7 +226,7 @@ export default function ConsultantWidget({ theme = "dark" }: ConsultantWidgetPro
       window.chat2desk?.open?.();
 
       const startButton = document.querySelector<HTMLButtonElement>(
-        ".startBtn__button, button.startBtn__button, .startBtn button, .startBtn"
+        ".startBtn__button, button.startBtn__button, .startBtn button, .startBtn, .chat24-widget-button"
       );
       startButton?.click();
 
@@ -238,11 +237,10 @@ export default function ConsultantWidget({ theme = "dark" }: ConsultantWidgetPro
       }
 
       const chatButtons = document.querySelectorAll(
-        '.startBtn, .startBtn__button, button.startBtn__button, [class*="startBtn__button"], #chat24-button'
+        '.startBtn, .startBtn__button, button.startBtn__button, [class*="startBtn__button"], #chat24-button, .chat24-widget-button'
       );
       chatButtons.forEach((btn) => {
-        (btn as HTMLElement).style.cssText =
-          "display: none !important; visibility: hidden !important; pointer-events: none !important;";
+        (btn as HTMLElement).style.cssText = "display: none !important; visibility: hidden !important; pointer-events: none !important; opacity: 0 !important;";
       });
     }, 150);
   };
@@ -304,40 +302,18 @@ export default function ConsultantWidget({ theme = "dark" }: ConsultantWidgetPro
     <>
       <style jsx global>{`
         @keyframes fab-bounce-in {
-          0% {
-            opacity: 0;
-            transform: scale(0.3);
-          }
-          50% {
-            transform: scale(1.05);
-          }
-          70% {
-            transform: scale(0.9);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
+          0% { opacity: 0; transform: scale(0.3); }
+          50% { transform: scale(1.05); }
+          70% { transform: scale(0.9); }
+          100% { opacity: 1; transform: scale(1); }
         }
         @keyframes card-slide-up {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
         @keyframes pulse-ring {
-          0% {
-            transform: scale(1);
-            opacity: 0.5;
-          }
-          100% {
-            transform: scale(1.5);
-            opacity: 0;
-          }
+          0% { transform: scale(1); opacity: 0.5; }
+          100% { transform: scale(1.5); opacity: 0; }
         }
         .animate-fab-bounce-in {
           animation: fab-bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
@@ -359,7 +335,7 @@ export default function ConsultantWidget({ theme = "dark" }: ConsultantWidgetPro
           aria-label="Открыть виджет консультанта"
         >
           <div className="absolute inset-0 rounded-full bg-white/20 pulse-ring" />
-          <MessageCircle className="w-8 h-8 text-white relative z-10" />
+          <MessageSquareText className="w-8 h-8 text-white relative z-10" />
         </button>
       )}
 
@@ -473,7 +449,7 @@ export default function ConsultantWidget({ theme = "dark" }: ConsultantWidgetPro
                       {chat2deskStatus === "loading" && <Loader2 className="w-6 h-6 animate-spin" />}
                       {chat2deskStatus === "error" && <AlertCircle className="w-6 h-6" />}
                       {(chat2deskStatus === "ready" || chat2deskStatus === "idle") && (
-                        <MessageCircle className="w-6 h-6" />
+                        <MessageSquareText className="w-6 h-6" />
                       )}
                     </div>
                     <div className="flex-1 text-left">
