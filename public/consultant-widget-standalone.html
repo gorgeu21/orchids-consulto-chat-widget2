@@ -387,11 +387,11 @@
       }
 
       // Dynamic internal z-index so multiple instances have predictable layering
-      var zBase = 9000 + (hashString(instanceId) % 800);
-      document.documentElement.style.setProperty('--cw-z-base', String(zBase));
+        var zBase = 9000 + (hashString(instanceId) % 800);
+        document.documentElement.style.setProperty('--cw-z-base', String(zBase));
 
-        var CLOSE_STORAGE_KEY = 'consultantWidgetClosedUntil_' + instanceId;
-        var isOpen = true;
+        var isOpen = false;
+        var isVisible = false;
         var chat2deskStatus = 'idle';
         var chat2deskInitialized = false;
 
