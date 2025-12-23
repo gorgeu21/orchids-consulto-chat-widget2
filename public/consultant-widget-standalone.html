@@ -426,18 +426,25 @@
         subtree: true
       });
 
-      function getRootContainer() {
-        var container = document.querySelector('[data-consultant-widget-root]');
-        if (!container) {
-          container = document.createElement('div');
-          container.setAttribute('data-consultant-widget-root', '');
-          document.body.appendChild(container);
-        }
+        function getRootContainer() {
+          var container = document.querySelector('[data-consultant-widget-root]');
+          if (!container) {
+            container = document.createElement('div');
+            container.setAttribute('data-consultant-widget-root', '');
+            document.body.appendChild(container);
 
-        // Make the ID unique per instance
-        container.id = 'consultantWidget-' + instanceId;
-        return container;
-      }
+            container.onmouseenter = function() {
+              window.parent.postMessage({ action: 'cw-pointer-auto' }, '*');
+            };
+            container.onmouseleave = function() {
+              window.parent.postMessage({ action: 'cw-pointer-none' }, '*');
+            };
+          }
+
+          // Make the ID unique per instance
+          container.id = 'consultantWidget-' + instanceId;
+          return container;
+        }
 
       function checkClosedState() {
         try {
