@@ -579,7 +579,7 @@
             var container = getRootContainer();
             if (!container) return;
 
-            if (!isVisible) {
+            if (!isVisible || isChatActive) {
               container.innerHTML = '';
               return;
             }
