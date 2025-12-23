@@ -588,13 +588,15 @@
               return;
             }
 
-              if (!isOpen) {
-                container.innerHTML = '\
-                  <button class="fab-button" onclick="window.consultantWidgetToggle()" aria-label="Открыть виджет">\
-                    <div class="pulse-ring"></div>\
-                    <img src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/cf1c9248-ff3e-4acd-9da1-612b3ed743d8-consulto-promo-bubble-lovable-app/assets/images/consultant-avatar-b1necHKX-1.jpg" alt="Консультант">\
-                  </button>';
-              } else {
+                if (!isOpen) {
+                  container.innerHTML = '\
+                    <button class="fab-button" onclick="window.consultantWidgetToggle()" aria-label="Открыть виджет">\
+                      <div class="pulse-ring"></div>\
+                      <svg class="fab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">\
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>\
+                      </svg>\
+                    </button>';
+                } else {
             var chatIconContent = chat2deskStatus === 'loading'
               ? '<svg class="spinner" style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/></svg>'
               : chat2deskStatus === 'error'
