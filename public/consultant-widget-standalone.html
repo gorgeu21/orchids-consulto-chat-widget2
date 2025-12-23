@@ -39,22 +39,24 @@
       to { transform: rotate(360deg); }
     }
 
-    .startBtn,
-    .startBtn__button,
-    button.startBtn__button,
-    [class*="startBtn"],
-    #chat24-button,
-    .chat24-widget-button {
-      display: none !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-      opacity: 0 !important;
-      position: fixed !important;
-      left: -9999px !important;
-      top: -9999px !important;
-      width: 0 !important;
-      height: 0 !important;
-    }
+      .startBtn,
+      .startBtn__button,
+      button.startBtn__button,
+      [class*="startBtn"],
+      #chat24-button,
+      .chat24-widget-button,
+      #chat24-widget-container .startBtn {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        opacity: 0 !important;
+        position: fixed !important;
+        left: -9999px !important;
+        top: -9999px !important;
+        width: 0 !important;
+        height: 0 !important;
+        z-index: -1 !important;
+      }
 
     #chat24-iframe-container {
       pointer-events: auto !important;
