@@ -370,12 +370,12 @@ export default function ConsultantWidget({ theme = "dark" }: ConsultantWidgetPro
         }
       `}</style>
 
-      {!isOpen && (
+          {!isOpen && (
         <button
           onClick={toggleOpen}
           className={`fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-2xl ${
             isDark ? "bg-[#00A8E8]" : "bg-[#10B981]"
-          } hover:scale-110 transition-all duration-300 flex items-center justify-center group animate-fab-bounce-in`}
+          } hover:scale-110 transition-all duration-300 flex items-center justify-center group animate-fab-bounce-in p-0 overflow-hidden border-2 border-white`}
           aria-label="Открыть виджет консультанта"
         >
           <div
@@ -383,7 +383,11 @@ export default function ConsultantWidget({ theme = "dark" }: ConsultantWidgetPro
               isDark ? "bg-[#00A8E8]" : "bg-[#10B981]"
             } pulse-ring`}
           />
-          <MessageCircle className="w-8 h-8 text-white relative z-10" />
+          <img 
+            src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/cf1c9248-ff3e-4acd-9da1-612b3ed743d8-consulto-promo-bubble-lovable-app/assets/images/consultant-avatar-b1necHKX-1.jpg" 
+            alt="Консультант"
+            className="w-full h-full object-cover relative z-10"
+          />
         </button>
       )}
 
