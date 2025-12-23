@@ -42,7 +42,9 @@
     .startBtn,
     .startBtn__button,
     button.startBtn__button,
-    [class*="startBtn"] {
+    [class*="startBtn"],
+    #chat24-button,
+    .chat24-widget-button {
       display: none !important;
       visibility: hidden !important;
       pointer-events: none !important;
@@ -50,6 +52,8 @@
       position: fixed !important;
       left: -9999px !important;
       top: -9999px !important;
+      width: 0 !important;
+      height: 0 !important;
     }
 
     #chat24-iframe-container {
