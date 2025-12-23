@@ -708,8 +708,12 @@
         document.dispatchEvent(new CustomEvent('popups:open'));
       };
 
-        updateWidget();
-        initChat2Desk();
+        setTimeout(function() {
+          isVisible = true;
+          updateWidget();
+          initChat2Desk();
+          console.log('[Consultant Widget] Initialized after 3s delay');
+        }, 3000);
 
       window.consultantWidgetReset = function() {
         try {
