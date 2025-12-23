@@ -701,17 +701,19 @@
           isOpen = false;
         });
 
-        var chatCloseObserver = new MutationObserver(function() {
-          var chatContainer = document.getElementById('chat24-iframe-container');
-          if (chatContainer) {
-            var display = window.getComputedStyle(chatContainer).display;
-            if (display === 'none') {
-              console.log('[Chat2Desk] 🔴 Чат закрыт, показываем виджет-визитку');
-              isOpen = true;
-              updateWidget();
+          var chatCloseObserver = new MutationObserver(function() {
+            var chatContainer = document.getElementById('chat24-iframe-container');
+            if (chatContainer) {
+              var display = window.getComputedStyle(chatContainer).display;
+              if (display === 'none') {
+                console.log('[Chat2Desk] 🔴 Чат закрыт, возвращаем виджет');
+                isChatActive = false;
+                isOpen = false; // Return to FAB mode
+                window.parent.postMessage({ action: 'cw-pointer-none' }, '*');
+                updateWidget();
+              }
             }
-          }
-        });
+          });
 
       setTimeout(function() {
         var chatContainer = document.getElementById('chat24-iframe-container');
